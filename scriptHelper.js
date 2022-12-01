@@ -1,8 +1,12 @@
 // Write your helper functions here!
 require('isomorphic-fetch');
 
+// "addDestinationInfo does not need to return anything."
 function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {
-   // Here is the HTML formatting for our mission target div.
+    let missionTarget = document.getElementById("missionTarget");
+    missionTarget.innerHTML = `<h2>Mission Destination</h2><ol><li>Name: ${name}</li><li>Diameter: ${diameter}</li><li>Star: ${star}</li><li>Distance from Earth: ${distance}</li><li>Number of Moons: ${moons}</li><img src=${imageUrl}>`
+   
+    // Here is the HTML formatting for our mission target div.
    /*
                 <h2>Mission Destination</h2>
                 <ol>
@@ -14,13 +18,14 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
                 </ol>
                 <img src="">
    */
+
 }
 
 // VALIDATE INPUT: Should take in a string as parameter and return "Empty", NaN or "Is A Number" as appropriate.
 function validateInput(testInput) {
 
     if (!testInput) {
-        console.log("validateInput - field empty");
+        console.log("validateInput - field empty"); // test
         return "Empty";
     } else if (isNaN(Number(testInput)) === true) {
         console.log("validateInput - not a number");  // test
@@ -40,7 +45,7 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
     let copilotStatus = document.getElementById("copilotStatus");
     let fuelStatus = document.getElementById("fuelStatus");
     let cargoStatus = document.getElementById("cargoStatus");
-    //let list = document.getElementById("faultyItems"); // this was causing an error if used as faultyItems or as list.  Not sure why.
+    //let list = document.getElementById("faultyItems"); // this was causing an error if used as faultyItems or as list.  Need clarity on "list" as a variable.
     let launchStatus = document.getElementById("launchStatus");
 
     if (validateInput(pilot) === "Empty" || validateInput(copilot) === "Empty" || validateInput(fuelLevel) === "Empty" || validateInput(cargoLevel) === "Empty") {
@@ -55,25 +60,25 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
         copilotStatus.innerHTML = `Pilot ${copilot} is ready for launch`; // using template literal, update the li element copilotStatus to include copilot's name
         
         if (fuelLevel < 10000 && cargoLevel > 10000) { // fuel low, cargo too high
-            console.log("formSubmission #1 fuel LOW, cargo HIGH");
+            console.log("formSubmission #1 fuel LOW, cargo HIGH"); // test
             launchStatus.style.color = "red"; // change h2 element launchStatus text color to red.
             launchStatus.innerHTML = "Shuttle not ready for launch"; // change h2 element launchStatus to "Shuttle not ready for launch"
             fuelStatus.innerHTML = "Fuel level too low for launch"; // <10000 fuel level
             cargoStatus.innerHTML = "Cargo mass too high for launch"; // >10000 cargo level
         }
         else if (fuelLevel < 10000 && cargoLevel <= 10000) { // fuel low, cargo ok
-            console.log("formSubmission #2 fuel LOW, cargo ok");
+            console.log("formSubmission #2 fuel LOW, cargo ok"); // test
             launchStatus.style.color = "red"; // change h2 element launchStatus text color to red.
             launchStatus.innerHTML = "Shuttle not ready for launch"; // change h2 element launchStatus to "Shuttle not ready for launch"
-            fuelStatus.innerHTML = "Fuel level too low for launch"; // if user submits < 10000 fuel level
-            cargoStatus.innerHTML = "Cargo mass low enough for launch";
+            fuelStatus.innerHTML = "Fuel level too low for launch"; // <10000 fuel level
+            cargoStatus.innerHTML = "Cargo mass low enough for launch"; // <=10000 cargo level
         }
         else if (fuelLevel >= 10000 && cargoLevel > 10000) {  // fuel ok, cargo too high
-            console.log("formSubmission #3 fuel ok, cargo HIGH");
+            console.log("formSubmission #3 fuel ok, cargo HIGH"); // test
             launchStatus.style.color = "red"; // change h2 element launchStatus text color to red.
             launchStatus.innerHTML = "Shuttle not ready for launch"; // change h2 element launchStatus to "Shuttle not ready for launch"
-            fuelStatus.innerHTML = "Fuel level high enough for launch"
-            cargoStatus.innerHTML = "Cargo mass too high for launch";
+            fuelStatus.innerHTML = "Fuel level high enough for launch" // >=10000 fuel level
+            cargoStatus.innerHTML = "Cargo mass too high for launch"; // >10000 cargo level
         }
         else {
             console.log("formSubmission #4 fuel ok, cargo ok");
@@ -95,7 +100,11 @@ async function myFetch() {
     return planetsReturned;
 }
 
+// pickPlanet function - take in one argument (list of planets), return one planet from list with a randomly-selected index via Math.random().
 function pickPlanet(planets) {
+    let planetSelect;
+    planetSelect = Math.floor(Math.random() * planets.length);
+    return planets[planetSelect];
 }
 
 module.exports.addDestinationInfo = addDestinationInfo;
